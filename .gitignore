@@ -1,0 +1,21 @@
+# Config files
+config/db.php
+config.php
+
+# Vendor
+vendor/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+error_log
+*.log
+
+# IDEs
+.idea/
+.vscode/
+
+# Uploads (optional, depending on if you want to track them)
+# uploads/

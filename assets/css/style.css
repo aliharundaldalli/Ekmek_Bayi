@@ -1,0 +1,371 @@
+/**
+ * Ekmek Sipariş Sistemi - Ana Stil Dosyası
+ */
+
+/* Genel Stiller */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #495057;
+}
+
+/* Container Maksimum Genişlik */
+.container {
+    max-width: 1200px;
+}
+
+/* Card Stilleri */
+.card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    border-top-left-radius: 0.5rem !important;
+    border-top-right-radius: 0.5rem !important;
+}
+
+/* Sol Kenar Bordürlü Kartlar (Dashboard için) */
+.card.border-left-primary {
+    border-left: 0.25rem solid #4e73df !important;
+}
+
+.card.border-left-success {
+    border-left: 0.25rem solid #1cc88a !important;
+}
+
+.card.border-left-info {
+    border-left: 0.25rem solid #36b9cc !important;
+}
+
+.card.border-left-warning {
+    border-left: 0.25rem solid #f6c23e !important;
+}
+
+.card.border-left-danger {
+    border-left: 0.25rem solid #e74a3b !important;
+}
+
+/* Butonlar */
+.btn {
+    border-radius: 0.4rem;
+    padding: 0.375rem 1rem;
+}
+
+.btn-primary {
+    background-color: #4e73df;
+    border-color: #4e73df;
+}
+
+.btn-primary:hover {
+    background-color: #4262c5;
+    border-color: #3a57b9;
+}
+
+.btn-success {
+    background-color: #1cc88a;
+    border-color: #1cc88a;
+}
+
+.btn-success:hover {
+    background-color: #17a673;
+    border-color: #169b6b;
+}
+
+/* Form Kontrolleri */
+.form-control {
+    border-radius: 0.4rem;
+    padding: 0.5rem 1rem;
+}
+
+.form-control:focus {
+    border-color: #a2b9ff;
+    box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
+}
+
+.input-group-text {
+    border-radius: 0.4rem 0 0 0.4rem;
+    background-color: #eaecf4;
+}
+
+.form-control+.input-group-text {
+    border-radius: 0 0.4rem 0.4rem 0;
+}
+
+/* Yükleniyor Animasyonu */
+.spinner-border {
+    width: 2rem;
+    height: 2rem;
+}
+
+/* Timeline Stilleri */
+.timeline {
+    position: relative;
+    padding-left: 1rem;
+    margin: 0 0 0 1rem;
+    color: #495057;
+}
+
+.timeline-item {
+    position: relative;
+    border-left: 2px solid #e9ecef;
+    padding-bottom: 2rem;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-item-marker {
+    position: absolute;
+    left: -1rem;
+    width: 1rem;
+}
+
+.timeline-item-marker-text {
+    position: absolute;
+    left: -5.5rem;
+    width: 4rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: right;
+    color: #a2acba;
+}
+
+.timeline-item-marker-indicator {
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 100%;
+    background-color: #fff;
+    border: 3px solid #4e73df;
+    z-index: 10;
+}
+
+.timeline-item-content {
+    padding-left: 1.5rem;
+    padding-bottom: 0.5rem;
+}
+
+/* Tablo Stilleri */
+.table {
+    color: #495057;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(78, 115, 223, 0.05);
+}
+
+.table th {
+    font-weight: 600;
+    color: #4a5568;
+}
+
+/* Footer Stilleri */
+footer {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Uyarı Kutuları */
+.alert {
+    border-radius: 0.4rem;
+    padding: 1rem 1.25rem;
+}
+
+/* Giriş Sayfası Özel Stilleri */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+}
+
+/* Dropdown Menüler */
+.dropdown-menu {
+    padding: 0.5rem 0;
+    border-radius: 0.4rem;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-item {
+    padding: 0.5rem 1.5rem;
+}
+
+.dropdown-item:hover {
+    background-color: #eaecf4;
+}
+
+.dropdown-item i {
+    color: #4e73df;
+    margin-right: 0.5rem;
+}
+
+/* Badge */
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+    border-radius: 0.4rem;
+}
+
+/* Navbar */
+.navbar-nav .nav-link {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+.navbar-nav .nav-link i {
+    margin-right: 0.25rem;
+}
+
+/* Mobil Görünüm Ayarlamaları */
+@media (max-width: 768px) {
+    .timeline {
+        margin-left: 0;
+    }
+
+    .timeline-item-marker-text {
+        left: -4.5rem;
+    }
+}
+
+/* Modern Auth Pages */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.auth-body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 15px;
+}
+
+.auth-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    border: none;
+}
+
+.auth-header {
+    background: transparent;
+    padding: 2rem 2rem 1rem;
+    text-align: center;
+    border: none;
+}
+
+.auth-header h4 {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.auth-body-content {
+    padding: 1rem 2rem 2rem;
+}
+
+.form-floating>.form-control {
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    padding-left: 1rem;
+}
+
+.form-floating>.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+}
+
+.form-floating>label {
+    padding-left: 1rem;
+    color: #6c757d;
+}
+
+.btn-modern {
+    background: linear-gradient(to right, #667eea, #764ba2);
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    color: white;
+    width: 100%;
+}
+
+.btn-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.auth-footer a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.auth-footer a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+.auth-logo {
+    margin-bottom: 1rem;
+    max-height: 80px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .auth-container {
+        padding: 10px;
+    }
+
+    .auth-header {
+        padding: 1.5rem 1.5rem 0.5rem;
+    }
+
+    .auth-body-content {
+        padding: 1rem 1.5rem 1.5rem;
+    }
+}
+
+/* Status Toggle Button Hover Effect */
+a[href*="action=toggle"] .badge {
+    transition: all 0.2s ease;
+}
+
+a[href*="action=toggle"]:hover .badge {
+    filter: brightness(1.1);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+    cursor: pointer;
+}

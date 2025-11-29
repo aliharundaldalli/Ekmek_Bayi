@@ -1,0 +1,303 @@
+/**
+ * Ekmek Sipariş Sistemi - Büfe Panel Stili
+ */
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 48px 0 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 767.98px) {
+    .sidebar {
+        position: static;
+        padding-top: 0;
+    }
+}
+
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 48px);
+    padding-top: 0.5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #fff;
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    margin: 0.2rem 0.5rem;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    font-weight: 700;
+}
+
+.sidebar .nav-link i {
+    margin-right: 0.5rem;
+    color: inherit;
+}
+
+/* Topbar */
+.topbar {
+    height: 4.375rem;
+}
+
+.topbar .nav-item .nav-link {
+    position: relative;
+    height: 4.375rem;
+    display: flex;
+    align-items: center;
+    padding: 0 0.75rem;
+}
+
+.topbar .nav-item .nav-link .badge-counter {
+    position: absolute;
+    transform: scale(0.7);
+    transform-origin: top right;
+    right: 0.25rem;
+    margin-top: -0.25rem;
+}
+
+.topbar .dropdown {
+    position: static;
+}
+
+.topbar .dropdown .dropdown-menu {
+    width: calc(100% - 1.5rem);
+    right: 0.75rem;
+}
+
+.topbar .dropdown-list {
+    padding: 0;
+    border: none;
+    overflow: hidden;
+}
+
+.topbar .dropdown-list .dropdown-header {
+    background-color: #0d6efd;
+    border: 1px solid #0d6efd;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    color: #fff;
+}
+
+.topbar .dropdown-list .dropdown-item {
+    white-space: normal;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-left: 1px solid #e3e6f0;
+    border-right: 1px solid #e3e6f0;
+    border-bottom: 1px solid #e3e6f0;
+    line-height: 1.3rem;
+}
+
+.topbar-divider {
+    width: 0;
+    border-right: 1px solid #e3e6f0;
+    height: calc(4.375rem - 2rem);
+    margin: auto 1rem;
+}
+
+/* Dashboard Kartları */
+.card-header {
+    background-color: #f8f9fc;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+.border-left-primary {
+    border-left: 0.25rem solid #0d6efd !important;
+}
+
+.border-left-success {
+    border-left: 0.25rem solid #198754 !important;
+}
+
+.border-left-info {
+    border-left: 0.25rem solid #0dcaf0 !important;
+}
+
+.border-left-warning {
+    border-left: 0.25rem solid #ffc107 !important;
+}
+
+.border-left-danger {
+    border-left: 0.25rem solid #dc3545 !important;
+}
+
+/* Ürün Listesi */
+.product-list {
+    margin-bottom: 2rem;
+}
+
+.product-item {
+    position: relative;
+    padding: 1rem;
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+    margin-bottom: 1rem;
+    transition: all 0.2s;
+}
+
+.product-item:hover {
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+.product-item .product-price {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #0d6efd;
+}
+
+.product-item .product-description {
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.product-item .product-quantity {
+    width: 70px;
+    text-align: center;
+}
+
+/* Sipariş Listesi */
+.order-list {
+    margin-bottom: 2rem;
+}
+
+.order-item {
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.order-item .order-header {
+    background-color: #f8f9fc;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+.order-item .order-body {
+    padding: 1rem;
+}
+
+.order-item .order-products {
+    margin-bottom: 1rem;
+}
+
+.order-item .order-footer {
+    background-color: #f8f9fc;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #e3e6f0;
+}
+
+/* Sipariş Durumu Badge'leri */
+.badge-pending {
+    background-color: #6c757d;
+}
+
+.badge-confirmed {
+    background-color: #0d6efd;
+}
+
+.badge-preparing {
+    background-color: #0dcaf0;
+}
+
+.badge-ready {
+    background-color: #198754;
+}
+
+.badge-delivered {
+    background-color: #20c997;
+}
+
+.badge-cancelled {
+    background-color: #dc3545;
+}
+
+/* Profil Sayfası */
+.profile-header {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    margin-bottom: 1.5rem;
+}
+
+.profile-header .profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.profile-header .profile-info {
+    padding-left: 1.5rem;
+}
+
+.profile-content {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+/* Sipariş Oluşturma Sayfası */
+.order-create-form .section-title {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+.order-summary {
+    background-color: #f8f9fc;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    position: sticky;
+    top: 4.375rem;
+}
+
+.order-summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.order-summary-total {
+    font-weight: bold;
+    font-size: 1.1rem;
+    border-top: 1px solid #e3e6f0;
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* Responsive Ayarlamalar */
+@media (max-width: 767.98px) {
+    .profile-header {
+        text-align: center;
+    }
+    
+    .profile-header .profile-image {
+        margin-bottom: 1rem;
+    }
+    
+    .profile-header .profile-info {
+        padding-left: 0;
+    }
+}
