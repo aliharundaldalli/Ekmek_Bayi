@@ -23,7 +23,11 @@ $site_title = htmlspecialchars($settings['site_title'] ?? 'Ekmek Sipariş');
 $logo_path = htmlspecialchars($settings['logo'] ?? 'assets/images/logo.png');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = clean($_POST['email'] ?? '');
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $error = 'Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.';
+    } else {
+        $email = clean($_POST['email'] ?? '');
   
     if (empty($email)) {
         $error = 'Lütfen e-posta adresinizi giriniz.';
@@ -79,6 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $success = 'Şifre sıfırlama talimatları e-posta adresinize gönderildi.';
             error_log('Bulunamayan email için şifre sıfırlama denemesi: ' . $email);
         }
+        }
     }
 }
 ?>
@@ -117,6 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
 
                 <form method="post" action="" class="needs-validation" novalidate>
+                    <?php $csrf_token = generateCSRFToken(); ?>
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                     <div class="form-floating mb-4">
                         <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required autofocus>
                         <label for="email">E-posta Adresi</label>

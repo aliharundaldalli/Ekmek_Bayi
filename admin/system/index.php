@@ -42,6 +42,13 @@ try {
 
 // --- Form Gönderildi mi? (POST Metodu) ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $_SESSION['error_message'] = 'Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.';
+        redirect(rtrim(BASE_URL, '/') . '/admin/system/index.php');
+        exit;
+    }
+
 
     $update_errors = [];
     $updated_count = 0;
@@ -301,6 +308,8 @@ include_once ROOT_PATH . '/admin/header.php';
 
         <?php if (!empty($settings)): ?>
             <form action="<?php echo rtrim(BASE_URL, '/'); ?>/admin/system/index.php" method="POST" enctype="multipart/form-data">
+                <?php $csrf_token = generateCSRFToken(); ?>
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 
                 <!-- Tab Navs -->
                 <ul class="nav nav-tabs mb-4" id="settingsTab" role="tablist">

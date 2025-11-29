@@ -37,6 +37,13 @@ $page_title = 'Yeni Ekmek Çeşidi Ekle';
 
 // Form gönderildi mi?
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $_SESSION['error_message'] = 'Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.';
+        redirect(BASE_URL . 'admin/bread/add.php');
+        exit;
+    }
+
     // Form verilerini al... (önceki kodla aynı)
     $name = trim($_POST['name'] ?? '');
     $description = trim($_POST['description'] ?? '');
@@ -171,6 +178,8 @@ include_once BASE_PATH . '/admin/header.php';
         <?php endif; ?>
 
          <form action="<?php echo BASE_URL; ?>admin/bread/add.php" method="POST" enctype="multipart/form-data">
+            <?php $csrf_token = generateCSRFToken(); ?>
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
             <div class="mb-3">
                 <label for="name" class="form-label">Ekmek Adı <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="name" name="name" value="<?php echo htmlspecialchars($form_data['name'] ?? ''); ?>" required>

@@ -284,13 +284,13 @@ try {
 // --- Handle Form Submission ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // --- Basic CSRF Check (Uncomment and implement if using CSRF tokens) ---
-    // if (!isset($_POST['csrf_token']) || !validateCsrfToken($_POST['csrf_token'])) {
-    //     $errors['form'] = "Geçersiz form gönderimi veya oturum süresi doldu. Lütfen sayfayı yenileyip tekrar deneyin.";
-    // }
+    // --- Basic CSRF Check ---
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $errors['form'] = "Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.";
+    }
 
     // Proceed only if CSRF is valid (or check is disabled)
-    // if (empty($errors['form'])) { // Uncomment if using CSRF check
+    if (empty($errors['form'])) {
 
         // --- Get and Trim Inputs ---
         $subject = trim($_POST['subject'] ?? '');
@@ -720,7 +720,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } // End if empty($errors) validation check
 
-    // } // End CSRF Check else block (Uncomment if using CSRF check)
+    } // End CSRF Check else block
 
 } // End POST request handling
 
@@ -737,9 +737,13 @@ include_once ROOT_PATH . '/my/header.php'; // Adjust path as needed
                 <h1 class="h3 mb-0 fw-bold">Yeni Destek Talebi</h1>
                 <p class="mb-0">Sorularınızı, sorunlarınızı veya taleplerinizi detaylı bir şekilde belirtin.</p>
             </div>
-            <a href="<?php echo BASE_URL; ?>/my/support/index.php" class="btn btn-light btn-sm px-3">
-                <i class="fas fa-arrow-left me-1"></i> Taleplerim
-            </a>
+            <form action="<?php echo BASE_URL; ?>/my/support/create.php" method="post" enctype="multipart/form-data" id="createTicketForm">
+                <?php $csrf_token = generateCSRFToken(); ?>
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
+                <a href="<?php echo BASE_URL; ?>/my/support/index.php" class="btn btn-light btn-sm px-3">
+                    <i class="fas fa-arrow-left me-1"></i> Taleplerim
+                </a>
+            </form>
         </div>
     </div>
     
@@ -843,8 +847,8 @@ include_once ROOT_PATH . '/my/header.php'; // Adjust path as needed
 
             <!-- Ticket Form -->
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" class="needs-validation" novalidate>
-                <?php // --- CSRF Token Field (Uncomment if using CSRF) --- ?>
-                <?php /* <input type="hidden" name="csrf_token" value="<?php echo generateCsrfToken(); ?>"> */ ?>
+                <?php $csrf_token = generateCSRFToken(); ?>
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
 
                 <div class="row g-3 mb-4">
                     <div class="col-md-8">

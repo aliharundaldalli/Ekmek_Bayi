@@ -43,6 +43,11 @@ $errors = [];
 $success = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $errors[] = 'Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.';
+    } else {
+
     // Form verilerini al
     $bakery_name = clean($_POST['bakery_name'] ?? '');
     $first_name = clean($_POST['first_name'] ?? '');
@@ -280,6 +285,7 @@ if ($verification_token !== null) {
             $errors[] = 'Veritabanı hatası: ' . $e->getMessage();
         }
     }
+    }
 }
 
 // Sayfa başlığı
@@ -315,6 +321,8 @@ include_once ROOT_PATH . '/admin/header.php';
 
 
     <form action="edit.php?id=<?php echo $user_id; ?>" method="POST" enctype="multipart/form-data">
+        <?php $csrf_token = generateCSRFToken(); ?>
+        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
         <div class="row">
             <!-- Sol Kolon: Profil Kartı & Hesap Durumu -->
             <div class="col-xl-4 col-lg-5">
@@ -396,7 +404,6 @@ include_once ROOT_PATH . '/admin/header.php';
                             <input type="file" class="form-control" id="profile_image" name="profile_image" accept="image/*">
                             <div class="form-text">JPG, PNG veya GIF. Maksimum 2MB.</div>
                         </div>
-
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="first_name" class="form-label">Ad <span class="text-danger">*</span></label>

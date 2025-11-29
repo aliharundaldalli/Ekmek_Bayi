@@ -17,6 +17,13 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
 
 // --- Kategori Formu İşlemleri ---
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $_SESSION['error'] = 'Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.';
+        header("Location: " . BASE_URL . "/admin/support/categories.php" . ($action == 'edit' ? "?action=edit&id=$category_id" : "?action=add"));
+        exit;
+    }
+
     $name = isset($_POST['name']) ? trim($_POST['name']) : '';
     $description = isset($_POST['description']) ? trim($_POST['description']) : '';
     $is_active = isset($_POST['is_active']) ? 1 : 0;
@@ -175,6 +182,8 @@ if (isset($_SESSION['success'])) {
         </div>
         <div class="card-body">
             <form method="post" action="<?php echo BASE_URL; ?>/admin/support/categories.php?action=<?php echo $action; ?><?php echo $category_id ? '&id=' . $category_id : ''; ?>">
+                <?php $csrf_token = generateCSRFToken(); ?>
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <div class="mb-3">
                     <label for="name" class="form-label">Kategori Adı <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="name" name="name" required 

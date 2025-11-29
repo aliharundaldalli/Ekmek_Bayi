@@ -49,7 +49,11 @@ try {
 
 // Profil güncelleme işlemi
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile'])) {
-    $address = trim($_POST['address']);
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $error_message = "Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.";
+    } else {
+        $address = trim($_POST['address']);
     $phone = trim($_POST['phone']);
     $email = trim($_POST['email']);
     $errors = [];
@@ -89,11 +93,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile'])) {
     } else {
         $error_message = implode("<br>", $errors);
     }
+    }
 }
+
 
 // Şifre değiştirme işlemi
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_password'])) {
-    $current_password = $_POST['current_password'];
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $error_message = "Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.";
+    } else {
+        $current_password = $_POST['current_password'];
     $new_password = $_POST['new_password'];
     $confirm_password = $_POST['confirm_password'];
     $errors = [];
@@ -118,10 +128,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_password'])) {
         }
     }
     if (!empty($errors)) $error_message = implode("<br>", $errors);
+    }
 }
 
 // Profil resmi yükleme
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['upload_profile_image'])) {
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $error_message = "Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.";
+    } else {
     if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] == UPLOAD_ERR_OK) {
         $allowed = ['image/jpeg', 'image/png', 'image/gif'];
         $max_size = 2 * 1024 * 1024; // 2MB
@@ -155,7 +170,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['upload_profile_image']
     } elseif (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] != UPLOAD_ERR_NO_FILE) {
         $error_message = "Dosya yükleme hatası.";
     }
+    }
 }
+
 
 $page_title = "Profil Bilgilerim";
 $current_page = "profile";
@@ -267,6 +284,8 @@ $initials = mb_strtoupper(mb_substr($user['first_name'], 0, 1) . mb_substr($user
                 </div>
                 <div class="card-body">
                     <form method="post" action="">
+                        <?php $csrf_token = generateCSRFToken(); ?>
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                         <h5 class="mb-3 text-gray-800 border-bottom pb-2">Kişisel Bilgiler</h5>
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -330,6 +349,7 @@ $initials = mb_strtoupper(mb_substr($user['first_name'], 0, 1) . mb_substr($user
                 </div>
                 <div class="card-body">
                     <form method="post" action="">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                         <div class="mb-3">
                             <label for="current_password" class="form-label small text-uppercase fw-bold text-muted">Mevcut Şifre <span class="text-danger">*</span></label>
                             <div class="input-group">
@@ -378,6 +398,7 @@ $initials = mb_strtoupper(mb_substr($user['first_name'], 0, 1) . mb_substr($user
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="profile_image" class="form-label">Resim Seç (JPG, PNG, GIF)</label>

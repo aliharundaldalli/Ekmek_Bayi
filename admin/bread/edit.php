@@ -63,6 +63,13 @@ $form_errors = [];
 
 // --- Form Gönderildi mi? (POST Metodu) ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $_SESSION['error_message'] = 'Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.';
+        redirect(BASE_URL . 'admin/bread/edit.php?id=' . $bread_id);
+        exit;
+    }
+
     // Güvenlik: Formun doğru ID için gönderildiğini doğrula
     if (!isset($_POST['bread_id']) || (int)$_POST['bread_id'] !== $bread_id) {
         $_SESSION['error_message'] = 'Form gönderim hatası!';
@@ -222,6 +229,8 @@ include_once BASE_PATH . '/admin/header.php';
     <?php endif; ?>
 
     <form method="POST" action="<?php echo BASE_URL; ?>admin/bread/edit.php?id=<?php echo $bread_id; ?>" enctype="multipart/form-data">
+        <?php $csrf_token = generateCSRFToken(); ?>
+        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
         <input type="hidden" name="bread_id" value="<?php echo $bread_id; ?>">
         
         <div class="row">

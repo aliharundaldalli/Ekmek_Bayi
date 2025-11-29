@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // CSRF Doğrulama
     if (!validateCSRFToken($csrf_token)) {
-        $_SESSION['error_message'] = "Güvenlik doğrulaması başarısız oldu.";
+        $_SESSION['error_message'] = "Güvenlik doğrulaması başarısız oldu (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.";
         redirect(rtrim(BASE_URL, '/') . '/admin/inventory/edit.php?id=' . $bread_id);
         exit;
     }
@@ -195,7 +195,8 @@ include_once ROOT_PATH . '/admin/header.php';
                 </div>
                 <div class="card-body">
                     <form action="<?php echo BASE_URL; ?>/admin/inventory/edit.php?id=<?php echo $bread_id; ?>" method="post" id="editInventoryForm">
-                        <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
+                        <?php $csrf_token = generateCSRFToken(); ?>
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                         
                         <!-- Düzenleme Tipi Seçimi -->
                         <div class="mb-4">

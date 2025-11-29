@@ -253,7 +253,14 @@ try {
 }
 
 // Handle form submission
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $_SESSION['error'] = 'Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.';
+        redirect(BASE_URL . '/my/support/close.php?id=' . $ticket_id);
+        exit;
+    }
+
     $reason = trim($_POST['reason'] ?? '');
     $feedback = trim($_POST['feedback'] ?? '');
     $satisfied = isset($_POST['satisfied']) ? 1 : 0;
@@ -448,6 +455,8 @@ include_once ROOT_PATH . '/my/header.php';
                 </div>
                 <div class="card-body p-4">
                     <form method="post" id="closeTicketForm" class="needs-validation" novalidate>
+                        <?php $csrf_token = generateCSRFToken(); ?>
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                         <!-- Reason Selection -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Talebi Kapatma Sebebi <span class="text-danger">*</span></label>

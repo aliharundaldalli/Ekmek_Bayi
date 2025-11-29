@@ -75,6 +75,13 @@ $current_page = 'orders';
 // --- Form Gönderildi mi Kontrolü ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $_SESSION['error_message'] = 'Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.';
+        redirect(rtrim(BASE_URL, '/') . '/admin/orders/edit.php?id=' . $order_id);
+        exit;
+    }
+    
     // Form verilerini al
     $note = isset($_POST['note']) ? trim($_POST['note']) : '';
     
@@ -253,6 +260,8 @@ include_once ROOT_PATH . '/admin/header.php';
             </div>
             <div class="card-body">
                 <form action="" method="POST" id="edit-order-form">
+                    <?php $csrf_token = generateCSRFToken(); ?>
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                     <!-- Sipariş Genel Bilgileri -->
                     <div class="row mb-4">
                         <div class="col-md-3">

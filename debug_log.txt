@@ -12,3 +12,13 @@
 [2025-11-29 14:37:47] SUCCESS: Email sent to [daldallialiharun@gmail.com], Subject [Destek Talebinizin Durumu Değiştirildi: #SUP-251129-TSO3G]
 [2025-11-29 14:44:23] SUCCESS: Email sent to [aahdakademi@gmail.com], Subject [Sipariş Durumu Güncellendi - SIP-20251129-4-2-4426]
 [2025-11-29 14:44:26] SUCCESS: Email sent to [aahdakademi@gmail.com], Subject [Fatura: FTR-20251129-5]
+[2025-11-29 16:09:44] SUCCESS: Email sent to [aahdakademi@gmail.com], Subject [Sipariş Durumu Güncellendi - SIP-20251129-4-2-4426]
+[2025-11-29 16:10:12] SUCCESS: Email sent to [aahdakademi@gmail.com], Subject [Destek Talebinize Yanıt Verildi: #SUP-251129-4MUWL]
+[2025-11-29 16:10:46] ERROR: Email failed to [aliharun98.ad@gmail.com], Subject [Şifre Sıfırlama Talebiniz - Ekmek Sipariş Otomasyonu]. Mailer Error: SMTP Error: Could not authenticate.
+[2025-11-29 16:14:44] ERROR: Email failed to [aliharun98.ad@gmail.com], Subject [Şifre Sıfırlama Talebiniz - Ekmek Sipariş Otomasyonu]. Mailer Error: SMTP Error: Could not authenticate.
+[2025-11-29 16:15:44] SUCCESS: Email sent to [aliharun98.ad@gmail.com], Subject [Şifre Sıfırlama Talebiniz - Ekmek Sipariş Otomasyonu]
+[2025-11-29 16:22:01] SUCCESS: Email sent to [daldallialiharun@gmail.com], Subject [E-posta Adresinizi Doğrulayın]
+[2025-11-29 16:28:05] SUCCESS: Email sent to [daldallialiharun@gmail.com], Subject [Destek Talebiniz Oluşturuldu - Talep No: SUP-251129-8T27M]
+[2025-11-29 16:28:09] SUCCESS: Email sent to [aliharun98.ad@gmail.com], Subject [Yeni Destek Talebi: #SUP-251129-8T27M (Sorun Var)]
+[2025-11-29 16:28:11] SUCCESS: Email sent to [aliharun_daldalli@hotmail.com], Subject [Yeni Destek Talebi: #SUP-251129-8T27M (Sorun Var)]
+[2025-11-29 16:28:55] SUCCESS: Email sent to [daldallialiharun@gmail.com], Subject [Destek Talebinize Yanıt Verildi: #SUP-251129-8T27M]

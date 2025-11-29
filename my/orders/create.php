@@ -239,6 +239,12 @@ $order_prefix = $settings['order_prefix'] ?? 'SIP-';
 
 // --- Form Gönderildi mi? ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $_SESSION['error_message'] = "Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.";
+        redirect(rtrim(BASE_URL, '/') . '/my/orders/create.php');
+        exit;
+    }
     // Form verilerini al
     $bread_ids = isset($_POST['bread_id']) ? $_POST['bread_id'] : [];
     $sale_types = isset($_POST['sale_type']) ? $_POST['sale_type'] : [];
@@ -511,8 +517,8 @@ include_once ROOT_PATH . '/my/header.php';
                     
                     <form action="" method="post" id="orderForm">
             
-                        <?php generateCSRFToken(); // Token oluştur veya mevcut olanı kullan ?>
-                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? ''); ?>">
+                        <?php $csrf_token = generateCSRFToken(); // Token oluştur ?>
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                         
                         <div class="row">
                             <div class="col-md-12 mb-4">

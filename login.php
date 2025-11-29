@@ -26,6 +26,10 @@ if (!isset($settings) || !is_array($settings)) {
 if (session_status() == PHP_SESSION_NONE) { @session_start(); } // @ production'da önerilmez
 // Güvenli URL için
 $base_url_trimmed = rtrim(BASE_URL, '/');
+
+// CSRF Token Oluştur
+$csrf_token = generateCSRFToken();
+
 // --- Yönlendirme ve Form İşleme ---
 // Kullanıcı zaten giriş yapmışsa yönlendir
 if (function_exists('isLoggedIn') && isLoggedIn()) {
@@ -79,12 +83,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                    function_exists('verifyPassword') &&
                    function_exists('setUserSession') &&
                    function_exists('logActivity') &&
-                   function_exists('redirect');
+                   function_exists('logActivity') &&
+                   function_exists('redirect') &&
+                   function_exists('validateCSRFToken');
     if (!$can_proceed) {
         $error = 'Sistem hatası: Oturum açılamıyor. Lütfen yönetici ile iletişime geçin.';
-        error_log("Login Error: Missing required functions (clean, verifyPassword, setUserSession, logActivity, redirect) or \$pdo object.");
+        error_log("Login Error: Missing required functions (clean, verifyPassword, setUserSession, logActivity, redirect, validateCSRFToken) or \$pdo object.");
     } else {
-        // Hem e-posta hem de fırın adı için aynı input'u kullanıyoruz
+        // CSRF Kontrolü
+        if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+            $error = 'Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.';
+            error_log("Login CSRF Error: Invalid token.");
+        } else {
+            // Hem e-posta hem de fırın adı için aynı input'u kullanıyoruz
         $login_identifier = clean($_POST['email'] ?? ''); // Input name'i 'email' olarak kaldı, ama içerik email veya bakery_name olabilir
         $password = $_POST['password'] ?? '';
         $remember = isset($_POST['remember']); // Beni Hatırla (kullanımı size bağlı, genellikle cookie ile yapılır)
@@ -160,6 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = 'Giriş sırasında beklenmedik bir sistem hatası oluştu.';
             }
         } // Boş olmayan input kontrolü bitti
+        } // CSRF kontrolü bitti
     } // Fonksiyon/PDO varlığı kontrolü bitti
     // Hata varsa sayfayı yeniden yükle (PRG - Post-Redirect-Get Pattern)
     if (!empty($error)) {
@@ -242,6 +254,7 @@ try {
                 <?php endif; ?>
 
                 <form method="post" action="<?php echo $base_url_trimmed; ?>/login.php" class="needs-validation" novalidate>
+                    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="email" name="email" placeholder="E-posta veya Fırın Adı" required value="<?php echo $previous_identifier; ?>" autofocus>
                         <label for="email">E-posta veya Fırın Adı</label>

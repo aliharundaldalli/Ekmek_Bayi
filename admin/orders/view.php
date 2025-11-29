@@ -110,6 +110,13 @@ if (isset($_GET['generate_invoice']) && $_GET['generate_invoice'] === 'true') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_invoice'])) {
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $_SESSION['error_message'] = 'Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.';
+        redirect(rtrim(BASE_URL, '/') . '/admin/orders/view.php?id=' . $order_id);
+        exit;
+    }
+
     $invoice_id = $invoice['id'] ?? 0;
     if ($invoice_id > 0) {
         $result = sendInvoiceEmail($order_id, $invoice_id, $pdo);

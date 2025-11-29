@@ -81,6 +81,13 @@ try {
 
 // --- Form Gönderildi mi? (POST Metodu) ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $_SESSION['error_message'] = 'Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.';
+        redirect(rtrim(BASE_URL, '/') . '/admin/profile.php');
+        exit;
+    }
+
     $update_errors = [];
     $update_data = [];
     $update_params = [];
@@ -280,6 +287,8 @@ $status_badge = ($user['status'] == 1)
                 </div>
                 <div class="card-body">
                     <form action="<?php echo rtrim(BASE_URL, '/'); ?>/admin/profile.php" method="POST">
+                        <?php $csrf_token = generateCSRFToken(); ?>
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                         <h5 class="mb-3 text-gray-800 border-bottom pb-2">Kişisel Bilgiler</h5>
                         <div class="row">
                             <div class="col-md-6 mb-3">

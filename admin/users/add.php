@@ -20,6 +20,11 @@ $errors = [];
 $success = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $errors[] = 'Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.';
+    } else {
+
     // Form verilerini al
     $bakery_name = clean($_POST['bakery_name'] ?? '');
     $first_name = clean($_POST['first_name'] ?? '');
@@ -159,7 +164,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Veritabanı hatası: ' . $e->getMessage();
         }
     }
+    }
 }
+
 
 // Sayfa başlığı
 $page_title = 'Yeni Kullanıcı Ekle';
@@ -198,6 +205,8 @@ include_once ROOT_PATH . '/admin/header.php';
         <?php endif; ?>
         
         <form method="post" action="">
+            <?php $csrf_token = generateCSRFToken(); ?>
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
             <div class="row">
                 <div class="col-md-6">
                     <h5>Kişisel Bilgiler</h5>

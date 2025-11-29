@@ -58,6 +58,13 @@ try {
 
 // --- İşlemler (Yanıt Ekleme) ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_message'])) {
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $_SESSION['error_message'] = 'Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.';
+        redirect('view.php?id=' . $ticket_id);
+        exit;
+    }
+
     $message = trim($_POST['reply_message']);
     $attachment_data = null;
 
@@ -265,7 +272,9 @@ include_once ROOT_PATH . '/my/header.php';
                 
                 <?php if (!in_array($ticket['status'], ['resolved', 'closed'])): ?>
                 <div class="card-footer bg-white">
-                    <form method="post" action="" enctype="multipart/form-data">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        <?php $csrf_token = generateCSRFToken(); ?>
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                         <div class="mb-3">
                             <label for="reply_message" class="form-label fw-bold text-gray-700">Yanıtınız</label>
                             <textarea class="form-control" id="reply_message" name="reply_message" rows="4" placeholder="Mesajınızı buraya yazın..."></textarea>

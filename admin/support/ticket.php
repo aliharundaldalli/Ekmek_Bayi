@@ -148,6 +148,13 @@ function prepareTextEmail($html) {
 
 // --- İşlemler ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $_SESSION['error_message'] = 'Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.';
+        redirect("ticket.php?id=$ticket_id");
+        exit;
+    }
+
     
     // 1. Yanıt Ekleme
     if (isset($_POST['reply_message'])) {
@@ -422,6 +429,8 @@ $current_status = $status_badges[$ticket['status']] ?? ['bg-secondary', $ticket[
                         </div>
                     <?php else: ?>
                         <form method="POST" enctype="multipart/form-data">
+                            <?php $csrf_token = generateCSRFToken(); ?>
+                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                             <div class="mb-3">
                                 <label class="form-label fw-bold text-gray-800">Yanıtınız</label>
                                 <textarea name="reply_message" class="form-control" rows="4" placeholder="Mesajınızı buraya yazın..."></textarea>
@@ -456,6 +465,7 @@ $current_status = $status_badges[$ticket['status']] ?? ['bg-secondary', $ticket[
                 </div>
                 <div class="card-body">
                     <form method="POST" class="mb-3">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                         <input type="hidden" name="update_status" value="1">
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-uppercase text-muted">Durum Değiştir</label>
@@ -476,6 +486,7 @@ $current_status = $status_badges[$ticket['status']] ?? ['bg-secondary', $ticket[
 
                     <!-- Atama Formu -->
                     <form method="POST">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                         <input type="hidden" name="assign_ticket" value="1">
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-uppercase text-muted">Atama Yap</label>

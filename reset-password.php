@@ -43,7 +43,11 @@ if (!empty($email) && !empty($token)) {
 
 // POST İşlemi (Şifre Güncelleme)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $valid_link) {
-    $password = $_POST['password'] ?? '';
+    // CSRF Kontrolü
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $error = 'Güvenlik hatası: Geçersiz form gönderimi (CSRF). Lütfen sayfayı yenileyip tekrar deneyin.';
+    } else {
+        $password = $_POST['password'] ?? '';
     $password_confirm = $_POST['password_confirm'] ?? '';
 
     if (empty($password) || empty($password_confirm)) {
@@ -71,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $valid_link) {
         } catch (PDOException $e) {
             error_log("Password Reset Error: " . $e->getMessage());
             $error = 'Şifre güncellenirken bir hata oluştu.';
+        }
         }
     }
 }
@@ -125,6 +130,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $valid_link) {
 
                 <?php if ($valid_link && empty($success)): ?>
                     <form method="post" action="" class="needs-validation" novalidate>
+                        <?php $csrf_token = generateCSRFToken(); ?>
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                         <div class="form-floating mb-3">
                             <input type="password" class="form-control" id="password" name="password" placeholder="Yeni Şifre" required minlength="6">
                             <label for="password">Yeni Şifre</label>
